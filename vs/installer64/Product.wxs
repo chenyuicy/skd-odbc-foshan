@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <!-- Define variables -->
+  <?if $(var.Platform) != x64 ?>
+    <?error Invalid Platform variable ?>
+  <?endif?>
+
+  <?define BIT64 = "yes" ?>
+  <?define PKGNAME = "SKD ODBC Drivers(x64)" ?>
+  <?define PGFOLDER = "ProgramFiles64Folder" ?>
+  <?define DLL_PATH = "../x64/$(var.Configuration)" ?>
+
+  <?if $(var.Configuration) = Debug ?>
+    <?define POCO_FOUNDATION = "PocoFoundation64d.dll" ?>
+    <?define POCO_NET = "PocoNet64d.dll" ?>
+	<?define POCO_FOUNDATION_PDB = "PocoFoundation64d.pdb" ?>
+    <?define POCO_NET_PDB = "PocoNet64d.pdb" ?>
+  <?else?>
+    <?define POCO_FOUNDATION = "PocoFoundation64.dll" ?>
+    <?define POCO_NET = "PocoNet64.dll" ?>
+  <?endif ?>
+
+  <?define CrtMergeModule = "$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC140_CRT_x64.msm" ?>
+  <?define ANSI_ID = "568F7B5A-6943-4B87-AB67-51E52B91607F" ?>
+  <?define POCOLIB_ID = "D771CE33-985F-4C0B-ADE1-629115BEA253" ?>
+  <?define PRODUCT_ID= "D77FCBEA-C3A9-442C-8055-83CBDB57009B" ?>
+  <?define UNICODE_ID = "241F5D8F-BC09-47EC-808B-2B344CBCC131" ?>
+  <?define UPGRADE_ID = "B63A7326-E080-49E3-A963-8F5EFC2DDD65" ?>
+
+  <!-- Product details -->
+  <Product Id="$(var.PRODUCT_ID)"
+           Name="$(var.PKGNAME)"
+           Language="2052"
+           Codepage="936"
+           Version="1.0.0.20171107"
+           Manufacturer="shenku.net"
+           UpgradeCode="$(var.UPGRADE_ID)">
+
+    <!-- Package details -->
+    <Package 
+      Id='*'
+      Keywords="SKDI, ODBC"
+      Comments="SKDI ODBC driver"
+      Manufacturer="shenku.net"
+      InstallerVersion="301" 
+      Platform="$(var.Platform)"
+      Compressed="yes" 
+      InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage=" New Version SKDI ODBC has been installed." />
+    <MediaTemplate EmbedCab="yes" />
+    
+    <!-- Directories -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Merge Id="CRT" SourceFile="$(var.CrtMergeModule)" Language="0" DiskId="1" />
+      
+      <Directory Id="$(var.PGFOLDER)">
+        <Directory Id="INSTALLFOLDER" Name="SKD ODBC">
+          <Component Id ="PocoLibs" Guid="$(var.POCOLIB_ID)" Win64='$(var.BIT64)'>
+            <File Id='PocoFoundationDll'
+                  Name='$(var.POCO_FOUNDATION)'
+                  DiskId='1'
+                  Source='..\..\contrib\poco\bin64\$(var.POCO_FOUNDATION)' />
+            <File Id='PocoNetdll'
+                  Name='$(var.POCO_NET)'
+                  DiskId='1'
+                  Source='..\..\contrib\poco\bin64\$(var.POCO_NET)' />   
+			<?if $(var.Configuration) = Debug ?>
+				<File Id='PocoFoundationPdb'
+					Name='$(var.POCO_FOUNDATION_PDB)'
+					DiskId='1'
+					Source='..\..\contrib\poco\bin64\$(var.POCO_FOUNDATION_PDB)' />
+				<File Id='PocoNetPdb'
+					Name='$(var.POCO_NET_PDB)'
+					DiskId='1'
+					Source='..\..\contrib\poco\bin64\$(var.POCO_NET_PDB)' />   
+			<?endif ?>					  
+          </Component>
+          
+          <Component Id="AnsiDriver" Guid="$(var.ANSI_ID)" Win64='$(var.BIT64)'>
+            <File Id='AnsiDriverDll'
+                  Name='skd_odbc.dll'
+                  DiskId='1'
+                  Source='$(var.DLL_PATH)\skd_odbc.dll'
+                  KeyPath='yes' />
+			        <?if $(var.Configuration) = Debug ?>
+				        <File Id='AnsiDriverPdb'
+					        Name='skd_odbc.pdb'
+					        DiskId='1'
+					        Source='$(var.DLL_PATH)\skd_odbc.pdb'	/>
+			        <?endif ?>			  
+				  
+            <RegistryKey Id='AnsiOdbcRegInfo' 
+                         Root='HKLM' 
+                         Key='SOFTWARE\ODBC\ODBCINST.INI\SKD ANSI'
+                         ForceCreateOnInstall='yes'>
+              <RegistryValue Type='string' Name='Driver' Value='[INSTALLFOLDER]skd_odbc.dll'/>
+              <RegistryValue Type='string' Name='Setup' Value='[INSTALLFOLDER]skd_odbc.dll'/>
+              <RegistryValue Type='string' Name='Description' Value='SKD ODBC ANSI'/>
+              <RegistryValue Type='string' Name='APILevel' Value='1'/>
+              <RegistryValue Type='string' Name='DriverODBCVer' Value='03.80'/>
+              <RegistryValue Type='string' Name='SQLLevel' Value='1'/>
+              <RegistryValue Type='string' Name='ConnectFunctions' Value='YYN'/>
+              <RegistryValue Type='string' Name='FileUsage' Value='0'/>
+            </RegistryKey>
+            <RegistryKey Id='AnsiOdbcRegInstalled' 
+                         Root='HKLM' 
+                         Key='SOFTWARE\ODBC\ODBCINST.INI\ODBC Drivers'
+                         ForceCreateOnInstall='yes'>
+              <RegistryValue Type='string' Name='SKD ANSI' Value='Installed' />
+            </RegistryKey>
+          </Component>
+          <Component Id="UnicodeDriver" Guid="$(var.UNICODE_ID)" Win64='$(var.BIT64)'>
+            <File Id='UnicodeDriverDll'
+                  Name='skd_odbc_u.dll'
+                  DiskId='1'
+                  Source='$(var.DLL_PATH)\skd_odbc_u.dll'
+                  KeyPath='yes' />
+			      <?if $(var.Configuration) = Debug ?>
+				      <File Id='UnicodeDriverPdb'
+					      Name='skd_odbc_u.pdb'
+					      DiskId='1'
+					      Source='$(var.DLL_PATH)\skd_odbc_u.pdb' />
+			      <?endif ?>
+			
+            <RegistryKey Id='UnicodeOdbcRegInfo'
+                         Root='HKLM'
+                         Key='SOFTWARE\ODBC\ODBCINST.INI\SKD Unicode'
+                         ForceCreateOnInstall='yes'>
+              <RegistryValue Type='string' Name='Driver' Value='[INSTALLFOLDER]skd_odbc_u.dll'/>
+              <RegistryValue Type='string' Name='Setup' Value='[INSTALLFOLDER]skd_odbc_u.dll'/>
+              <RegistryValue Type='string' Name='Description' Value='SKD ODBC Unicode'/>
+              <RegistryValue Type='string' Name='APILevel' Value='1'/>
+              <RegistryValue Type='string' Name='DriverODBCVer' Value='03.80'/>
+              <RegistryValue Type='string' Name='SQLLevel' Value='1'/>
+              <RegistryValue Type='string' Name='ConnectFunctions' Value='YYN'/>
+              <RegistryValue Type='string' Name='FileUsage' Value='0'/>
+            </RegistryKey>
+            <RegistryKey Id='UnicodeOdbcRegInstalled'
+                         Root='HKLM'
+                         Key='SOFTWARE\ODBC\ODBCINST.INI\ODBC Drivers'
+                         ForceCreateOnInstall='yes'>
+              <RegistryValue Type='string' Name='SKD Unicode' Value='Installed' />
+            </RegistryKey>
+          </Component>
+          </Directory>
+      </Directory>
+    </Directory>
+
+    <!-- Features -->
+    <Feature Id='Complete' Title='SKD ODBC' Description='The complete package.'
+    Display='expand' Level='1' ConfigurableDirectory='INSTALLFOLDER'>
+      <Feature Id="AnsiDrivers"
+               Title="ANSI drivers"
+               Level="1" >
+        <ComponentRef Id="AnsiDriver" />
+        <ComponentRef Id="PocoLibs" />
+      </Feature>
+      <Feature Id="UnicodeDrivers"
+               Title="Unicode drivers"
+               Level="1" >
+        <ComponentRef Id="UnicodeDriver" />
+        <ComponentRef Id="PocoLibs" />
+      </Feature>
+      <Feature Id="CRT" AllowAdvertise="no" Display="hidden" Level="1" Title="Microsoft Visual C++ 2015 Runtime Components">
+        <MergeRef Id="CRT"/>
+      </Feature>
+    </Feature>
+
+    <!-- UI -->
+    <!--<UIRef Id="WixUI_Mondo" />
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+    -->
+    
+    <UIRef Id="WixUI_Minimal" />
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+    <WixVariable Id="WixUIDialogBmp" Value="WixUIDialogBmp.bmp"/>
+    <WixVariable Id="WixUIBannerBmp" Value="WixUIBannerBmp.bmp"/>
+  </Product>
+</Wix>

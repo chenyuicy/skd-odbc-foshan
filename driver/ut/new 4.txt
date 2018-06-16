@@ -1,0 +1,95 @@
+SELECT SUM(`roxxxxxxxx`.`无功功率`) AS `TEMP_Calculation_2800209112735971__1716814377__0_`,
+  SUM(`roxxxxxxxx`.`有功功率`) AS `TEMP_Calculation_7440209112658769__2079830917__0_`,
+  `roxxxxxxxx`.`计量电压` AS `X___`,
+  `roxxxxxxxx`.`配变类型` AS `X___1`,
+  `roxxxxxxxx`.`变压器名称` AS `X____`,
+  AVG(`roxxxxxxxx`.`配变容量`) AS `avg______ok`
+FROM (
+  SELECT
+    NAME AS `变压器名称`,
+    RADED_CAPACITY AS `配变容量`,
+    toDateTime(DATATIME) AS `时间`,
+    toDate(DATATIME) AS `日期`,
+    toYear(toDate(DATATIME)) AS `年`,
+    toMonth(toDate(DATATIME)) AS `月`,
+    toDayOfMonth(toDate(DATATIME)) AS `日`,
+    toHour(toDateTime(DATATIME)) AS `时`,
+    toMinute(toDateTime(DATATIME)) AS `分`,
+    CIRCUIT_ID AS `馈线id`,
+    MEASURATION_VOLTAGE_TYPE_NEW AS `计量电压`,
+    ID AS `设备id`,
+    IA AS `A相电流`,
+    IB AS `B相电流`,
+    IC AS `C相电流`,
+    MV * UA AS `A相电压值`,
+    MV * UB AS `B相电压值`,
+    MV * UC AS `C相电压值`,
+    PA AS `A相有功功率`,
+    PB AS `B相有功功率`,
+    PC AS `C相有功功率`,
+    P AS `有功功率`,
+    QA AS `A相无功功率`,
+    QB AS `B相无功功率`,
+    QC AS `C相无功功率`,
+    Q AS `无功功率`,
+    _PF AS `功率因数`,
+    TRANSFORMER_TYPE AS `配变类型`,
+    FZBPHD AS `负载不平衡度`,
+    DYBPHD AS `电压不平衡度`,
+    FZL1 AS `3相电流最大值负载率`,
+    FZL2 AS `视在功率负载率`,
+    ZONE_ID AS `供电局id`,
+    CLDLXDM AS `主副表类型`,
+    MEASURATION_VOLTAGE_TYPE AS `量测类型`,
+    MV AS `量测类型系数`,
+    UA,
+    UB,
+    UC
+  FROM
+    (
+      SELECT
+        ID,
+        DATATIME,
+        IA,
+        IB,
+        IC,
+        ifNull(UA, 0) AS UA,
+        ifNull(UB, 0) AS UB,
+        ifNull(UC, 0) AS UC,
+        P,
+        PA,
+        PB,
+        PC,
+        Q,
+        QA,
+        QB,
+        QC,
+        FZBPHD,
+        DYBPHD,
+        FZL1,
+        FZL2,
+        _PF
+      FROM
+        F_PI_PW_HL
+    ) ANY
+    LEFT JOIN (
+      SELECT
+        NAME,
+        CLDBS AS ID,
+        RADED_CAPACITY,
+        ZONE_ID,
+        CLDLXDM,
+        CIRCUIT_ID,
+        ZONE_ID,
+        MEASURATION_VOLTAGE_TYPE,
+        MEASURATION_VOLTAGE_TYPE_NEW,
+        ifNull(MEASURATION_VOLTAGE_TYPE_VALUE, 0.) AS MV,
+        TRANSFORMER_TYPE
+      FROM
+        CIM2_POWERTRANSFORMER_DN
+    ) USING (ID)
+) `roxxxxxxxx`
+WHERE ((`roxxxxxxxx`.`时间` >= toDateTime('2016-11-18 00:00:00')) AND (`roxxxxxxxx`.`时间` <= toDateTime('2016-12-15 23:59:59')))
+GROUP BY `X____`,
+  `X___`,
+  `X___1`

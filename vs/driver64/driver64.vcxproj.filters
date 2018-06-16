@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="headers">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\driver\connection.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\environment.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\log.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\platform.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\read_helpers.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\result_set.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\statement.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\string_ref.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\utils.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\win\resource.h">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\diagnostics.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\config.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\type_parser.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\escaping\escape_sequences.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\escaping\lexer.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\driver\escaping\string_view.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\driver\attr.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\handles.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\info.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\odbc.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\result_set.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\statement.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\connection.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\diagnostics.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\win\dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\win\setup.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\config.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\type_parser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\escaping\escape_sequences.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\escaping\lexer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\driver\environment.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\driver\win\resource.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\driver\win\export.def">
+      <Filter>src</Filter>
+    </None>
+  </ItemGroup>
+</Project>

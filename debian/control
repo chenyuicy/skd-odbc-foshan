@@ -1,0 +1,13 @@
+Source: skm-odbc
+Priority: optional
+Maintainer: Alexey Milovidov <milovidov@yandex-team.ru>
+Build-Depends: debhelper (>= 9), cmake3 | cmake, unixodbc-dev, libssl-dev
+Standards-Version: 4.1.1
+Homepage: https://skm.yandex
+
+Package: skm-odbc
+Section: database
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libssl1.0.0
+Description: Skm odbc driver
+ .
